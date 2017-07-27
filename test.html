@@ -39,17 +39,18 @@ $.fn.extend({
 		return $(this).wrapForm().serializeJSON();
 	},
 	resetFrom : function(){
-		var items = $(this).serializeForm();
-		$.each(items,function(key,value){//针对easyui的表单清空
-			var selector = $("input[name^="+key+"]");
-			if(selector.hasClass("easyui-combobox")){
-				selector.combobox("select", 0)
-			} else if(selector.hasClass("easyui-datebox")){
-				selector.combo("setText", "").combo("setValue", "")
-			}else{
-				selector.val("");
-			}
-		});
+        var items = $(this).serializeForm();
+        $.each(items,function(key,value){//针对easyui的表单清空
+            var selector = $("input[name^="+key+"]") ,
+                selectorEasyUI = $("input[comboname^="+key+"]");
+            if(selector.hasClass("easyui-combobox")){
+                selectorEasyUI.combobox("select", 0)
+            } else if(selector.hasClass("easyui-datebox")){
+                selectorEasyUI.combo("setText", "").combo("setValue", "")
+            }else{
+                selector.val("");
+            }
+        });
 	}
 });
 
