@@ -44,6 +44,7 @@ $.fn.extend({
             var selector = $("input[name^="+key+"]") ,
                 selectorEasyUI = $("input[comboname^="+key+"]");
             if(selector.hasClass("easyui-combobox")){
+                selectorEasyUI = $("select[comboname^="+key+"]");
                 selectorEasyUI.combobox("select", 0)
             } else if(selector.hasClass("easyui-datebox")){
                 selectorEasyUI.combo("setText", "").combo("setValue", "")
