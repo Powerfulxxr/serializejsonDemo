@@ -1,0 +1,56 @@
+<script src="jquery.min.js"></script>
+<script src="jquery.serializejson.min.js"></script>
+<div id="abc">
+<input name="a" value ="1"/>
+<input name="b" value ="2"/>
+<input name="c[]" value ="3"/>
+<input name="c[]" value ="4"/>
+<select name="selectD">
+<option>123</option>
+<option>12333</option>
+</select>
+<input type="button"  value="清空"/>
+</div>
+<script>
+var abc = function(){
+alert(0);
+}
+$("input[type='button']").on("abcd",abc);
+$(function(){
+	console.log($("#abc").serializeForm());
+
+	$("input[type='button']").click(function(){
+		$(this).trigger("abcd");
+		$("#abc").resetFrom();
+		
+	});
+});
+
+$.fn.extend({
+	wrapForm : function(){
+		var currentObj = $(this); 
+		if(currentObj.is("form")){//this是表单id或class
+			return currentObj;
+		}else{//针对表单没有被包裹form标签，此时this是包裹的div的id或class
+			return currentObj.parent().is("form") ? currentObj.parent() : currentObj.wrap("<form></form>").parent();
+		}
+	},
+	serializeForm : function(){//序列化表单成json对象
+		return $(this).wrapForm().serializeJSON();
+	},
+	resetFrom : function(){
+		var items = $(this).serializeForm();
+		$.each(items,function(key,value){//针对easyui的表单清空
+			var selector = $("input[name^="+key+"]");
+			if(selector.hasClass("easyui-combobox")){
+				selector.combobox("select", 0)
+			} else if(selector.hasClass("easyui-datebox")){
+				selector.combo("setText", "").combo("setValue", "")
+			}else{
+				selector.val("");
+			}
+		});
+	}
+});
+
+</script>
