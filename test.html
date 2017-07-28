@@ -52,7 +52,33 @@ $.fn.extend({
                 selector.val("");
             }
         });
-	}
+	},
+    httpUtil_POST:function(url,successCallback){//此时的选择器是你数据块所在的上层div的class或id
+        $.ajax({
+            url: url,
+            type: "post",
+            dataType: "json",
+            data: $(this).serializeForm()
+        }).then(
+            successCallback,//success function
+            function(response){//fail function
+                console.log("message",response.status+"<br/>"+response.statusText+"!");
+            }
+        );
+    },
+    httpUtil_GET:function(url,successCallback){//此时的选择器是你数据块所在的上层div的class或id
+        $.ajax({
+            url: url,
+            type: "get",
+            dataType: "json",
+            data: $(this).serializeForm()
+        }).then(
+            successCallback,//success function
+            function(response){//fail function
+                console.log("message",response.status+"<br/>"+response.statusText+"!");
+            }
+        );
+    }
 });
 
 </script>
