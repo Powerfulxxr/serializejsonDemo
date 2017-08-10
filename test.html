@@ -1,5 +1,43 @@
 <script src="jquery.min.js"></script>
 <script src="jquery.serializejson.min.js"></script>
+<div data-selector="m3" style="border:1px solid pink; height:25px;margin:8px;">
+    呼出录音1
+    <input type="button" data-selector="mp" value="播放"/>
+    <span refresh style="cursor:pointer;">刷新</span>
+    <audio  src="http://120.77.10.10/uncall_api/downloadFile.php?f_path=830-015806122912-20170803-154931-1501746569.193.mp3" >
+    </audio>
+</div>
+<div data-selector="m3" style="border:1px solid pink; height:25px;margin:8px;">
+    呼入录音1
+    <input type="button" data-selector="mp" value="播放"/>
+    <span refresh style="cursor:pointer;">刷新</span>
+    <audio  src="http://120.77.10.10/uncall_api/downloadFile.php?f_path=15806122912-830-20170804-133719-1501825039.923.mp3" >
+    </audio>
+</div>
+<div data-selector="m3"  style="border:1px solid pink; height:25px;margin:8px;">
+    张震岳-再见
+    <input type="button" data-selector="mp" value="播放"/>
+    <span refresh style="cursor:pointer;">刷新</span>
+    <audio  src="zaijian.mp3"></audio>
+</div>
+<div data-selector="m3"  style="border:1px solid pink; height:25px;margin:8px;">
+    徐歌阳-一万次悲伤
+    <input type="button" data-selector="mp" value="播放"/>
+    <span refresh style="cursor:pointer;">刷新</span>
+    <audio  src="yiwancibeishang.mp3"></audio>
+</div>
+<div data-selector="m3"  style="border:1px solid pink; height:25px;margin:8px;">
+    逃跑计划-一万次悲伤
+    <input type="button" data-selector="mp" value="播放"/>
+    <span refresh style="cursor:pointer;">刷新</span>
+    <audio  src="ywcbs.mp3"></audio>
+</div>
+<div data-selector="m3"  style="border:1px solid pink; height:25px;margin:8px;">
+    曾敏杰-我是不是应该离开
+    <input type="button" data-selector="mp" value="播放"/>
+    <span refresh style="cursor:pointer;">刷新</span>
+    <audio  src="woshibushianjingde likai.mp3"></audio>
+</div>
 <div id="abc">
 <input name="a" value ="1"/>
 <input name="b" value ="2"/>
@@ -17,6 +55,29 @@ alert(0);
 }
 $("input[type='button']").on("abcd",abc);
 $(function(){
+
+    $("input[data-selector='mp']").click(function(){
+        var input =  $(this);
+        var media = input.parent(),current = media.children().last().get(0);
+        current.paused ? (input.val("暂停"),current.play()) : (input.val("播放"),current.pause());//当前音乐的播发和暂停
+        current.onended = function () {
+            input.val("播放");
+        };
+        console.log(current.duration)//播放时间
+        console.log(current.currentTime);//播放进度
+        console.log(current.currentTime/current.duration);//%
+        media.siblings('div[data-selector="m3"]').each(function(i){//同辈音乐要被暂停
+            var mediaSiblings = $(this).children().last().get(0);
+            !mediaSiblings.paused ? ($(this).children().first().val("播放"),mediaSiblings.pause()) : "";
+        });
+    });
+    $("span[refresh]").click(function(){
+        var refresh =  $(this),input = $(this).prev();
+        var media = refresh.parent(),current = media.children().last().get(0);
+        input.val("播放");
+        current.load();//重新加载
+    });
+
 	console.log($("#abc").serializeForm());
 
 	$("input[type='button']").click(function(){
